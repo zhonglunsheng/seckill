@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seckill.dao.GoodsMapper">
+  <resultMap id="BaseResultMap" type="com.seckill.pojo.Goods">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="goods_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="goods_title" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="goods_img" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="goods_Detail" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="goods_stock" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, goods_name, goods_title, goods_img, goods_Detail, goods_stock
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from seckill_goods
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from seckill_goods
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.seckill.pojo.Goods">
+    insert into seckill_goods (id, goods_name, goods_title,
+      goods_img, goods_Detail, goods_stock
+      )
+    values (#{id,jdbcType=BIGINT}, #{goodsName,jdbcType=VARCHAR}, #{goodsTitle,jdbcType=VARCHAR},
+      #{goodsImg,jdbcType=VARCHAR}, #{goodsDetail,jdbcType=VARCHAR}, #{goodsStock,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.seckill.pojo.Goods">
+    insert into seckill_goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="goodsName != null">
+        goods_name,
+      </if>
+      <if test="goodsTitle != null">
+        goods_title,
+      </if>
+      <if test="goodsImg != null">
+        goods_img,
+      </if>
+      <if test="goodsDetail != null">
+        goods_Detail,
+      </if>
+      <if test="goodsStock != null">
+        goods_stock,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsTitle != null">
+        #{goodsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImg != null">
+        #{goodsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsDetail != null">
+        #{goodsDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsStock != null">
+        #{goodsStock,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.seckill.pojo.Goods">
+    update seckill_goods
+    <set>
+      <if test="goodsName != null">
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsTitle != null">
+        goods_title = #{goodsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImg != null">
+        goods_img = #{goodsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsDetail != null">
+        goods_Detail = #{goodsDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsStock != null">
+        goods_stock = #{goodsStock,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.seckill.pojo.Goods">
+    update seckill_goods
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_title = #{goodsTitle,jdbcType=VARCHAR},
+      goods_img = #{goodsImg,jdbcType=VARCHAR},
+      goods_Detail = #{goodsDetail,jdbcType=VARCHAR},
+      goods_stock = #{goodsStock,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="reduceStock" parameterType="long">
+    update seckill_goods
+    set goods_stock=goods_stock-1
+    where id=#{goodsId} and goods_stock>0
+  </update>
+</mapper>

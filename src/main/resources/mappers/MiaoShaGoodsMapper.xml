@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seckill.dao.MiaoShaGoodsMapper">
+  <resultMap id="BaseResultMap" type="com.seckill.pojo.MiaoShaGoods">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="goods_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="stock_count" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="end_date" javaType="java.util.Date" jdbcType="DATE" />
+      <arg column="start_date" javaType="java.util.Date" jdbcType="DATE" />
+      <arg column="miaosha_price" javaType="java.lang.Long" jdbcType="DECIMAL" />
+      <arg column="goods_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+    </constructor>
+  </resultMap>
+
+  <resultMap id="GoodsVoMap" type="com.seckill.vo.GoodsVo">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="goods_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="goods_title" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="goods_img" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="goods_Detail" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="goods_stock" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="miaosha_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="goods_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="stock_count" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="end_date" javaType="java.util.Date" jdbcType="DATE" />
+      <arg column="start_date" javaType="java.util.Date" jdbcType="DATE" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, goods_id, stock_count, end_date, start_date, miaosha_price, goods_price
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from seckill_msgoods
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from seckill_msgoods
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.seckill.pojo.MiaoShaGoods">
+    insert into seckill_msgoods (id, goods_id, stock_count, 
+      end_date, start_date, miaosha_price, 
+      goods_price)
+    values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{stockCount,jdbcType=INTEGER}, 
+      #{endDate,jdbcType=DATE}, #{startDate,jdbcType=DATE}, #{miaoshaPrice,jdbcType=DECIMAL}, 
+      #{goodsPrice,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.seckill.pojo.MiaoShaGoods">
+    insert into seckill_msgoods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="stockCount != null">
+        stock_count,
+      </if>
+      <if test="endDate != null">
+        end_date,
+      </if>
+      <if test="startDate != null">
+        start_date,
+      </if>
+      <if test="miaoshaPrice != null">
+        miaosha_price,
+      </if>
+      <if test="goodsPrice != null">
+        goods_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="stockCount != null">
+        #{stockCount,jdbcType=INTEGER},
+      </if>
+      <if test="endDate != null">
+        #{endDate,jdbcType=DATE},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=DATE},
+      </if>
+      <if test="miaoshaPrice != null">
+        #{miaoshaPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsPrice != null">
+        #{goodsPrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.seckill.pojo.MiaoShaGoods">
+    update seckill_msgoods
+    <set>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="stockCount != null">
+        stock_count = #{stockCount,jdbcType=INTEGER},
+      </if>
+      <if test="endDate != null">
+        end_date = #{endDate,jdbcType=DATE},
+      </if>
+      <if test="startDate != null">
+        start_date = #{startDate,jdbcType=DATE},
+      </if>
+      <if test="miaoshaPrice != null">
+        miaosha_price = #{miaoshaPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsPrice != null">
+        goods_price = #{goodsPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.seckill.pojo.MiaoShaGoods">
+    update seckill_msgoods
+    set goods_id = #{goodsId,jdbcType=BIGINT},
+      stock_count = #{stockCount,jdbcType=INTEGER},
+      end_date = #{endDate,jdbcType=DATE},
+      start_date = #{startDate,jdbcType=DATE},
+      miaosha_price = #{miaoshaPrice,jdbcType=DECIMAL},
+      goods_price = #{goodsPrice,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="listGoodsVo" resultMap="GoodsVoMap">
+    select g.*,mg.miaosha_price,mg.goods_price,mg.stock_count, mg.start_date, mg.end_date
+    from seckill_msgoods mg
+    left join seckill_goods g
+    on mg.goods_id = g.id
+  </select>
+
+  <select id="getGoodsVoByGoodsId" resultMap="GoodsVoMap">
+    select g.*,mg.miaosha_price,mg.goods_price,mg.stock_count, mg.start_date, mg.end_date
+    from seckill_msgoods mg
+    left join seckill_goods g
+    on mg.goods_id = g.id
+    where mg.goods_id = #{goodsId}
+  </select>
+
+  <update id="updateMiaoShaGoodsStock" parameterType="map">
+    UPDATE seckill_msgoods
+    SET stock_count = #{stockCount}
+    WHERE goods_id = #{goodsId}
+  </update>
+  <update id="reduceStock" parameterType="long">
+    update seckill_msgoods
+    set stock_count=stock_count-1
+    where goods_id=#{goodsId} and stock_count>0
+  </update>
+</mapper>
