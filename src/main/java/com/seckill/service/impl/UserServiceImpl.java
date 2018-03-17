@@ -113,7 +113,7 @@ public class UserServiceImpl implements IUserService{
         int number = 5000;
         Long id = 17886378987L;
         MiaoShaUser user = null;
-        File file = new File("G:/user.txt");
+        File file = new File("/root/user.txt");
         FileWriter writer = null;
         if (file.exists()){
             file.delete();
