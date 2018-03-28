@@ -1,16 +1,23 @@
 package com.seckill.controller;
 
 import com.seckill.common.ServerResponse;
-import com.seckill.pojo.MiaoShaUser;
+import com.seckill.redis.GoodsKey;
 import com.seckill.redis.RedisService;
 import com.seckill.service.IGoodsService;
 import com.seckill.service.IUserService;
-import com.seckill.vo.GoodsVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
 @RequestMapping("/goods")
 public class GoodsController {
@@ -24,39 +31,34 @@ public class GoodsController {
     @Autowired
     IGoodsService iGoodsService;
 
-    @RequestMapping(value="/to_list")
-    public String list(Model model) {
-        ServerResponse response = iGoodsService.listGoodsVo();
-        model.addAttribute("goodsList", response.getData());
-        return "goods_list";
+    @Autowired
+    ThymeleafViewResolver thymeleafViewResolver;
+
+    /**
+     * 获取商品列表
+     * @param model
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value="/to_list",produces = "text/html")
+    @ResponseBody
+    public String list(Model model, HttpServletRequest request, HttpServletResponse response) {
+        String html = redisService.get(GoodsKey.goodsList,"", String.class);
+        if (StringUtils.isBlank(html)){
+            ServerResponse result = iGoodsService.listGoodsVo();
+            model.addAttribute("goodsList", result.getData());
+            //手动渲染
+            WebContext webContext = new WebContext(request,response,request.getServletContext(),response.getLocale(),model.asMap());
+            html = thymeleafViewResolver.getTemplateEngine().process("goods_list",webContext);
+            redisService.set(GoodsKey.goodsList,"",html);
+        }
+        return html;
     }
 
-    @RequestMapping("/to_detail/{goodsId}")
-    public String detail(Model model,MiaoShaUser user,
-                         @PathVariable("goodsId")long goodsId) {
-        model.addAttribute("user", user);
-
-        GoodsVo goods = iGoodsService.getGoodsVoByGoodsId(goodsId);
-        model.addAttribute("goods", goods);
-
-        long startAt = goods.getStartDate().getTime();
-        long endAt = goods.getEndDate().getTime();
-        long now = System.currentTimeMillis();
-
-        int miaoshaStatus = 0;
-        int remainSeconds = 0;
-        if(now < startAt ) {//秒杀还没开始，倒计时
-            miaoshaStatus = 0;
-            remainSeconds = (int)((startAt - now )/1000);
-        }else  if(now > endAt){//秒杀已经结束
-            miaoshaStatus = 2;
-            remainSeconds = -1;
-        }else {//秒杀进行中
-            miaoshaStatus = 1;
-            remainSeconds = 0;
-        }
-        model.addAttribute("miaoshaStatus", miaoshaStatus);
-        model.addAttribute("remainSeconds", remainSeconds);
-        return "goods_detail";
+    @RequestMapping(value = "/to_detail/{goodsId}")
+    @ResponseBody
+    public ServerResponse detail(@PathVariable("goodsId")long goodsId) {
+        return iGoodsService.getGoodsVoByGoodsId(goodsId);
     }
 }

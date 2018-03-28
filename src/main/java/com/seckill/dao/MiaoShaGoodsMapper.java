@@ -1,6 +1,6 @@
 package com.seckill.dao;
 
-import com.seckill.pojo.MiaoShaGoods;
+import com.seckill.pojo.MiaoshaGoods;
 import com.seckill.vo.GoodsVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -9,15 +9,15 @@ import java.util.List;
 public interface MiaoShaGoodsMapper {
     int deleteByPrimaryKey(Long id);
 
-    int insert(MiaoShaGoods record);
+    int insert(MiaoshaGoods record);
 
-    int insertSelective(MiaoShaGoods record);
+    int insertSelective(MiaoshaGoods record);
 
-    MiaoShaGoods selectByPrimaryKey(Long id);
+    MiaoshaGoods selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(MiaoShaGoods record);
+    int updateByPrimaryKeySelective(MiaoshaGoods record);
 
-    int updateByPrimaryKey(MiaoShaGoods record);
+    int updateByPrimaryKey(MiaoshaGoods record);
 
     List<GoodsVo> listGoodsVo();
 

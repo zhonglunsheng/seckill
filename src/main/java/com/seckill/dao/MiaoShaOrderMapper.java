@@ -1,21 +1,21 @@
 package com.seckill.dao;
 
-import com.seckill.pojo.MiaoShaOrder;
+import com.seckill.pojo.MiaoshaOrder;
 import org.apache.ibatis.annotations.Param;
 
 public interface MiaoShaOrderMapper {
     int deleteByPrimaryKey(Long id);
 
-    int insert(MiaoShaOrder record);
+    int insert(MiaoshaOrder record);
 
-    int insertSelective(MiaoShaOrder record);
+    int insertSelective(MiaoshaOrder record);
 
-    MiaoShaOrder selectByPrimaryKey(Long id);
+    MiaoshaOrder selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(MiaoShaOrder record);
+    int updateByPrimaryKeySelective(MiaoshaOrder record);
 
-    int updateByPrimaryKey(MiaoShaOrder record);
+    int updateByPrimaryKey(MiaoshaOrder record);
 
-    MiaoShaOrder getMiaoshaOrderByUserIdGoodsId(@Param("userId")Long userId,@Param("goodsId")Long goodsId);
+    MiaoshaOrder getMiaoshaOrderByUserIdGoodsId(@Param("userId")Long userId, @Param("goodsId")Long goodsId);
 
 }

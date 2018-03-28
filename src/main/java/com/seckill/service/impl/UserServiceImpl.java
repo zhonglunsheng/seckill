@@ -5,7 +5,7 @@ import com.seckill.common.ResponseCode;
 import com.seckill.common.ServerResponse;
 import com.seckill.config.exception.GlobalException;
 import com.seckill.dao.MiaoShaUserMapper;
-import com.seckill.pojo.MiaoShaUser;
+import com.seckill.pojo.MiaoshaUser;
 import com.seckill.redis.MiaoshaUserKey;
 import com.seckill.redis.RedisService;
 import com.seckill.service.IUserService;
@@ -20,7 +20,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.UUID;
@@ -34,6 +33,13 @@ public class UserServiceImpl implements IUserService{
     @Autowired
     RedisService redisService;
 
+    /**
+     * 用户登录
+     * @param request
+     * @param response
+     * @param loginVo
+     * @return
+     */
     @Override
     public ServerResponse login(HttpServletRequest request,HttpServletResponse response, LoginVo loginVo) {
         if(loginVo == null) {
@@ -42,7 +48,7 @@ public class UserServiceImpl implements IUserService{
         String mobile = loginVo.getMobile();
         String formPass = loginVo.getPassword();
         //判断手机号是否存在
-        MiaoShaUser user = miaoShaUserMapper.selectByPrimaryKey(Long.parseLong(mobile));
+        MiaoshaUser user = getById(Long.valueOf(mobile));
         if(user == null) {
             throw new GlobalException(ResponseCode.MOBILE_NOT_EXIST);
         }
@@ -54,23 +60,13 @@ public class UserServiceImpl implements IUserService{
             throw new GlobalException(ResponseCode.PASSWORD_ERROR);
         }
 
-        if (!existCookieToken(request,Const.COOKIE_NAME_TOKEN)){
-            String token = UUID.randomUUID().toString().replace("-","");
-            addCookie(response,token,user);
-        }
+        String token = UUID.randomUUID().toString().replace("-","");
+        addCookie(response,token,user);
 
         return ServerResponse.createBySuccess();
     }
 
 
-    private void addCookie(HttpServletResponse response, String token,MiaoShaUser user){
-        redisService.set(MiaoshaUserKey.token,token,user);
-
-        Cookie cookie = new Cookie(Const.COOKIE_NAME_TOKEN,token);
-        cookie.setMaxAge(MiaoshaUserKey.token.expireSeconds());
-        cookie.setPath("/");
-        response.addCookie(cookie);
-    }
 
     /**
      * 获取User 并重置cookie时间
@@ -79,41 +75,60 @@ public class UserServiceImpl implements IUserService{
      * @return
      */
     @Override
-    public MiaoShaUser getByToken(HttpServletResponse response, String token){
+    public MiaoshaUser getByToken(HttpServletResponse response, String token){
         if (StringUtils.isEmpty(token)){
             return null;
         }
 
-        MiaoShaUser user = redisService.get(MiaoshaUserKey.token,token,MiaoShaUser.class);
+        MiaoshaUser user = redisService.get(MiaoshaUserKey.token,token,MiaoshaUser.class);
         if (user != null){
             addCookie(response,token,user);
         }
         return user;
     }
 
-    private Boolean existCookieToken(HttpServletRequest request, String cookieName){
-        Cookie[] cookies = request.getCookies();
-        if (cookies == null){
-            return false;
+
+    /**
+     * 获取用户信息
+     * @param id
+     * @return
+     */
+    private MiaoshaUser getById(Long id){
+        MiaoshaUser user = redisService.get(MiaoshaUserKey.getById,""+id,MiaoshaUser.class);
+        if (user == null){
+            user = miaoShaUserMapper.selectByPrimaryKey(id);
+            if (user != null)
+            redisService.set(MiaoshaUserKey.getById,""+id,user);
         }
-        for (Cookie cookie:
-             cookies) {
-            if (StringUtils.equals(cookie.getName(),cookieName)){
-                return true;
-            }
-        }
-        return false;
+        return user;
+    }
+
+    /**
+     * 添加Cookie
+     * @param response
+     * @param token
+     * @param user
+     */
+    private void addCookie(HttpServletResponse response, String token,MiaoshaUser user){
+        redisService.set(MiaoshaUserKey.token,token,user);
+
+        Cookie cookie = new Cookie(Const.COOKIE_NAME_TOKEN,token);
+        cookie.setMaxAge(MiaoshaUserKey.token.expireSeconds());
+        cookie.setPath("/");
+        response.addCookie(cookie);
     }
 
 
-
+    /**
+     * 创建用户用于压测
+     */
     @Transactional
     @Override
     public void createUser(){
         int number = 5000;
         Long id = 17886378987L;
-        MiaoShaUser user = null;
-        File file = new File("/root/user.txt");
+        MiaoshaUser user = null;
+        File file = new File("G:/user.txt");
         FileWriter writer = null;
         if (file.exists()){
             file.delete();
@@ -122,7 +137,7 @@ public class UserServiceImpl implements IUserService{
             file.createNewFile();
             writer = new FileWriter(file);
             for (int i = 0; i < number; i++) {
-                user = new MiaoShaUser();
+                user = new MiaoshaUser();
                 user.setId(id+i);
                 user.setNickname("lipop");
                 user.setSalt("1a2a3a");

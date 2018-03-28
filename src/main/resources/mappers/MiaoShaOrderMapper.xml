@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.seckill.dao.MiaoShaOrderMapper">
-  <resultMap id="BaseResultMap" type="com.seckill.pojo.MiaoShaOrder">
+  <resultMap id="BaseResultMap" type="com.seckill.pojo.MiaoshaOrder">
     <constructor>
       <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="user_id" javaType="java.lang.Long" jdbcType="BIGINT" />
@@ -22,13 +22,13 @@
     delete from seckill_msorder
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.seckill.pojo.MiaoShaOrder">
+  <insert id="insert" parameterType="com.seckill.pojo.MiaoshaOrder">
     insert into seckill_msorder (id, user_id, order_id, 
       goods_id)
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, 
       #{goodsId,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.seckill.pojo.MiaoShaOrder">
+  <insert id="insertSelective" parameterType="com.seckill.pojo.MiaoshaOrder">
     insert into seckill_msorder
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -59,7 +59,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.seckill.pojo.MiaoShaOrder">
+  <update id="updateByPrimaryKeySelective" parameterType="com.seckill.pojo.MiaoshaOrder">
     update seckill_msorder
     <set>
       <if test="userId != null">
@@ -74,7 +74,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.seckill.pojo.MiaoShaOrder">
+  <update id="updateByPrimaryKey" parameterType="com.seckill.pojo.MiaoshaOrder">
     update seckill_msorder
     set user_id = #{userId,jdbcType=BIGINT},
       order_id = #{orderId,jdbcType=BIGINT},

@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.seckill.common.Const;
-import com.seckill.pojo.MiaoShaUser;
+import com.seckill.pojo.MiaoshaUser;
 import com.seckill.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 	
 	public boolean supportsParameter(MethodParameter parameter) {
 		Class<?> clazz = parameter.getParameterType();
-		return clazz==MiaoShaUser.class;
+		return clazz==MiaoshaUser.class;
 	}
 
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,

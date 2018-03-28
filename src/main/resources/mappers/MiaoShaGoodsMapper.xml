@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.seckill.dao.MiaoShaGoodsMapper">
-  <resultMap id="BaseResultMap" type="com.seckill.pojo.MiaoShaGoods">
+  <resultMap id="BaseResultMap" type="com.seckill.pojo.MiaoshaGoods">
     <constructor>
       <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="goods_id" javaType="java.lang.Long" jdbcType="BIGINT" />
@@ -24,8 +24,8 @@
       <arg column="miaosha_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="goods_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="stock_count" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="end_date" javaType="java.util.Date" jdbcType="DATE" />
       <arg column="start_date" javaType="java.util.Date" jdbcType="DATE" />
+      <arg column="end_date" javaType="java.util.Date" jdbcType="DATE" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
@@ -41,7 +41,7 @@
     delete from seckill_msgoods
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.seckill.pojo.MiaoShaGoods">
+  <insert id="insert" parameterType="com.seckill.pojo.MiaoshaGoods">
     insert into seckill_msgoods (id, goods_id, stock_count, 
       end_date, start_date, miaosha_price, 
       goods_price)
@@ -49,7 +49,7 @@
       #{endDate,jdbcType=DATE}, #{startDate,jdbcType=DATE}, #{miaoshaPrice,jdbcType=DECIMAL}, 
       #{goodsPrice,jdbcType=DECIMAL})
   </insert>
-  <insert id="insertSelective" parameterType="com.seckill.pojo.MiaoShaGoods">
+  <insert id="insertSelective" parameterType="com.seckill.pojo.MiaoshaGoods">
     insert into seckill_msgoods
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -98,7 +98,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.seckill.pojo.MiaoShaGoods">
+  <update id="updateByPrimaryKeySelective" parameterType="com.seckill.pojo.MiaoshaGoods">
     update seckill_msgoods
     <set>
       <if test="goodsId != null">
@@ -122,7 +122,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.seckill.pojo.MiaoShaGoods">
+  <update id="updateByPrimaryKey" parameterType="com.seckill.pojo.MiaoshaGoods">
     update seckill_msgoods
     set goods_id = #{goodsId,jdbcType=BIGINT},
       stock_count = #{stockCount,jdbcType=INTEGER},

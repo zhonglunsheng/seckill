@@ -3,12 +3,14 @@ package com.seckill.service.impl;
 import java.util.Date;
 import java.util.Random;
 
-import com.seckill.dao.GoodsMapper;
 import com.seckill.dao.MiaoShaOrderMapper;
 import com.seckill.dao.OrderInfoMapper;
-import com.seckill.pojo.MiaoShaOrder;
-import com.seckill.pojo.MiaoShaUser;
+import com.seckill.pojo.MiaoshaOrder;
+import com.seckill.pojo.MiaoshaUser;
 import com.seckill.pojo.OrderInfo;
+import com.seckill.redis.GoodsKey;
+import com.seckill.redis.MiaoshaKey;
+import com.seckill.redis.RedisService;
 import com.seckill.service.IGoodsService;
 import com.seckill.service.IOrderService;
 import com.seckill.vo.GoodsVo;
@@ -30,13 +32,16 @@ public class OrderServiceImpl implements IOrderService{
 	@Autowired
 	IGoodsService iGoodsService;
 
+	@Autowired
+	RedisService redisService;
+
 	@Override
-	public MiaoShaOrder getMiaoshaOrderByUserIdGoodsId(long userId, long goodsId) {
+	public MiaoshaOrder getMiaoshaOrderByUserIdGoodsId(long userId, long goodsId) {
 		return miaoShaOrderMapper.getMiaoshaOrderByUserIdGoodsId(userId, goodsId);
 	}
 
 	@Transactional
-	public OrderInfo createOrder(MiaoShaUser user, GoodsVo goods) {
+	public OrderInfo createOrder(MiaoshaUser user, GoodsVo goods) {
 		//生成商品订单
 		OrderInfo orderInfo = new OrderInfo();
 		orderInfo.setId(createOrderId());
@@ -52,26 +57,41 @@ public class OrderServiceImpl implements IOrderService{
 		orderInfoMapper.insert(orderInfo);
 
 		//生成秒杀订单
-		MiaoShaOrder miaoShaOrder = new MiaoShaOrder();
-		miaoShaOrder.setId(orderInfo.getId());
-		miaoShaOrder.setGoodsId(goods.getId());
-		miaoShaOrder.setOrderId(orderInfo.getId());
-		miaoShaOrder.setUserId(user.getId());
-		miaoShaOrderMapper.insert(miaoShaOrder);
+		MiaoshaOrder miaoshaOrder = new MiaoshaOrder();
+		miaoshaOrder.setId(orderInfo.getId());
+		miaoshaOrder.setGoodsId(goods.getId());
+		miaoshaOrder.setOrderId(orderInfo.getId());
+		miaoshaOrder.setUserId(user.getId());
+		miaoShaOrderMapper.insert(miaoshaOrder);
 		return orderInfo;
 	}
 
 	@Transactional
 	@Override
-	public OrderInfo miaosha(MiaoShaUser user, GoodsVo goods) {
+	public OrderInfo miaosha(MiaoshaUser user, GoodsVo goods) {
 		//减库存 下订单 写入秒杀订单
-
 		boolean result = iGoodsService.reduceStock(goods);
-
+		redisService.decr(GoodsKey.getMiaoshaGoodsStock,""+goods.getId());
 		if (result){
 			return createOrder(user, goods);
 		}else{
 			return null;
+		}
+	}
+
+	@Override
+	public long getMiaoshaResult(Long userId, Long goodsId){
+		MiaoshaOrder miaoshaOrder = miaoShaOrderMapper.getMiaoshaOrderByUserIdGoodsId(userId,goodsId);
+		if (miaoshaOrder != null){
+			//秒杀成功
+			return miaoshaOrder.getOrderId();
+		}else{
+			boolean isOver = redisService.exists(MiaoshaKey.isGoodsOver,""+goodsId);
+			if (isOver){
+				return -1;
+			}else{
+				return 0;
+			}
 		}
 	}
 

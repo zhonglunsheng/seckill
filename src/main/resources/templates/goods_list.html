@@ -42,7 +42,7 @@
                     <td ><img th:src="@{${goods.goodsImg}}" width="100" height="100" /></td>
                     <td th:text="${goods.miaoshaPrice}"></td>
                     <td th:text="${goods.stockCount}"></td>
-                    <td><a th:href="'/goods/to_detail/'+${goods.id}">详情</a></td>
+                    <td><a th:href="'/goods_detail.htm?goodsId='+${goods.id}">详情</a></td>
                 </tr>
             </table>
         </div>
@@ -50,3 +50,22 @@
 </div>
 </body>
 </html>
+<script>
+    $(function(){
+        getGoodsList();
+    });
+
+    function getGoodsList(){
+        $.ajax({
+            url:"/goods/to_list",
+            type:"GET",
+            success:function(data){
+                if (data.status == 0){
+                    alert(data);
+                }else{
+                    layer.error(data.msg);
+                }
+            }
+        });
+    }
+</script>

@@ -1,6 +1,6 @@
 package com.seckill.pojo;
 
-public class MiaoShaOrder {
+public class MiaoshaOrder {
     private Long id;
 
     private Long userId;
@@ -9,14 +9,14 @@ public class MiaoShaOrder {
 
     private Long goodsId;
 
-    public MiaoShaOrder(Long id, Long userId, Long orderId, Long goodsId) {
+    public MiaoshaOrder(Long id, Long userId, Long orderId, Long goodsId) {
         this.id = id;
         this.userId = userId;
         this.orderId = orderId;
         this.goodsId = goodsId;
     }
 
-    public MiaoShaOrder() {
+    public MiaoshaOrder() {
         super();
     }
 

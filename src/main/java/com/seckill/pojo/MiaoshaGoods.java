@@ -3,7 +3,7 @@ package com.seckill.pojo;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class MiaoShaGoods {
+public class MiaoshaGoods {
     private Long id;
 
     private Long goodsId;
@@ -18,7 +18,7 @@ public class MiaoShaGoods {
 
     private BigDecimal goodsPrice;
 
-    public MiaoShaGoods(Long id, Long goodsId, Integer stockCount, Date endDate, Date startDate, Long miaoshaPrice, BigDecimal goodsPrice) {
+    public MiaoshaGoods(Long id, Long goodsId, Integer stockCount, Date endDate, Date startDate, Long miaoshaPrice, BigDecimal goodsPrice) {
         this.id = id;
         this.goodsId = goodsId;
         this.stockCount = stockCount;
@@ -28,7 +28,7 @@ public class MiaoShaGoods {
         this.goodsPrice = goodsPrice;
     }
 
-    public MiaoShaGoods() {
+    public MiaoshaGoods() {
         super();
     }
 

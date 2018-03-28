@@ -11,8 +11,8 @@ public enum ResponseCode {
     SERVER_ERROR(500100, "服务端异常"),
     BIND_ERROR(500101, "参数校验异常：%s"),
     REQUEST_ILLEGAL(500102, "请求非法"),
+    VERIFY_CODE_ERROR(500102, "验证码错误"),
     ACCESS_LIMIT_REACHED(500104, "访问太频繁！"),
-
     //登录模块 5002XX
     SESSION_ERROR(500210, "Session不存在或者已经失效"),
     PASSWORD_EMPTY(500211, "登录密码不能为空"),

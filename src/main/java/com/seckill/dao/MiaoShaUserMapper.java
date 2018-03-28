@@ -1,17 +1,17 @@
 package com.seckill.dao;
 
-import com.seckill.pojo.MiaoShaUser;
+import com.seckill.pojo.MiaoshaUser;
 
 public interface MiaoShaUserMapper {
     int deleteByPrimaryKey(Long id);
 
-    int insert(MiaoShaUser record);
+    int insert(MiaoshaUser record);
 
-    int insertSelective(MiaoShaUser record);
+    int insertSelective(MiaoshaUser record);
 
-    MiaoShaUser selectByPrimaryKey(Long id);
+    MiaoshaUser selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(MiaoShaUser record);
+    int updateByPrimaryKeySelective(MiaoshaUser record);
 
-    int updateByPrimaryKey(MiaoShaUser record);
+    int updateByPrimaryKey(MiaoshaUser record);
 }

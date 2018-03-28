@@ -2,7 +2,7 @@ package com.seckill.pojo;
 
 import java.util.Date;
 
-public class MiaoShaUser {
+public class MiaoshaUser {
     private Long id;
 
     private String nickname;
@@ -19,7 +19,7 @@ public class MiaoShaUser {
 
     private Integer loginCount;
 
-    public MiaoShaUser(Long id, String nickname, String password, String salt, String head, Date registerData, Date lastLoginDate, Integer loginCount) {
+    public MiaoshaUser(Long id, String nickname, String password, String salt, String head, Date registerData, Date lastLoginDate, Integer loginCount) {
         this.id = id;
         this.nickname = nickname;
         this.password = password;
@@ -30,7 +30,7 @@ public class MiaoShaUser {
         this.loginCount = loginCount;
     }
 
-    public MiaoShaUser() {
+    public MiaoshaUser() {
         super();
     }
 
