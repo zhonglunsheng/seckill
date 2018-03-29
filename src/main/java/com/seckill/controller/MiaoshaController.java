@@ -1,5 +1,6 @@
 package com.seckill.controller;
 
+import com.seckill.access.AccessLimit;
 import com.seckill.common.ResponseCode;
 import com.seckill.common.ServerResponse;
 import com.seckill.config.exception.GlobalException;
@@ -73,6 +74,7 @@ public class MiaoshaController implements InitializingBean{
 	 * QPS:56
 	 * 5000 * 2
 	 * */
+	@AccessLimit(seconds = 5,maxCount = 5)
     @RequestMapping(value = "/{path}/do_miaosha",method = RequestMethod.POST)
 	@ResponseBody
     public ServerResponse miaosha(Model model,MiaoshaUser user,
@@ -129,7 +131,7 @@ public class MiaoshaController implements InitializingBean{
 									  @RequestParam("goodsId")long goodsId) {
 		model.addAttribute("user", user);
 		if(user == null) {
-			throw new GlobalException(ResponseCode.SESSION_ERROR);
+			throw new GlobalException(ResponseCode.NEED_LOGIN);
 		}
 		long result  =iOrderService.getMiaoshaResult(user.getId(), goodsId);
 		return ServerResponse.createBySuccess(result);
@@ -154,7 +156,7 @@ public class MiaoshaController implements InitializingBean{
 	public ServerResponse<String> getMiaoshaVerifyCod(HttpServletResponse response, MiaoshaUser user,
 													  @RequestParam("goodsId")long goodsId) {
 		if(user == null) {
-			throw new GlobalException(ResponseCode.SESSION_ERROR);
+			throw new GlobalException(ResponseCode.NEED_LOGIN);
 		}
 		try {
 			BufferedImage image  = iMiaoshaService.createVerifyCode(user, goodsId);
@@ -176,7 +178,7 @@ public class MiaoshaController implements InitializingBean{
 												 @RequestParam(value="verifyCode", defaultValue="0")int verifyCode
 	) {
 		if(user == null) {
-			throw new GlobalException(ResponseCode.SESSION_ERROR);
+			throw new GlobalException(ResponseCode.NEED_LOGIN);
 		}
 		boolean check = iMiaoshaService.checkVerifyCode(user, goodsId, verifyCode);
 		if(!check) {

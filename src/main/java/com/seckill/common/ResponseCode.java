@@ -14,7 +14,7 @@ public enum ResponseCode {
     VERIFY_CODE_ERROR(500102, "验证码错误"),
     ACCESS_LIMIT_REACHED(500104, "访问太频繁！"),
     //登录模块 5002XX
-    SESSION_ERROR(500210, "Session不存在或者已经失效"),
+    NEED_LOGIN(500210, "用户未登录"),
     PASSWORD_EMPTY(500211, "登录密码不能为空"),
     MOBILE_EMPTY(500212, "手机号不能为空"),
     MOBILE_ERROR(500213, "手机号格式错误"),
