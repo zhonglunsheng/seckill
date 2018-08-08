@@ -27,5 +27,4 @@ dist/
 nbdist/
 .nb-gradle/
 
-#others
-*.zip
+
