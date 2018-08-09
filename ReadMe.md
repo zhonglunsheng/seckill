@@ -40,7 +40,7 @@ MyBatis Generator | 代码生成 | http://www.mybatis.org/generator/index.html
 PageHelper | MyBatis物理分页插件 | http://git.oschina.net/free/Mybatis_PageHelper
 druid | 数据库连接池 | https://github.com/alibaba/druid
 Logback | 日志组件 | https://logback.qos.ch/
-RabbitMq | 消息队列 | https://github.com/google/guava
+RabbitMq | 消息队列 | https://www.rabbitmq.com/
 Maven | 项目构建管理 | http://maven.apache.org/
 Git | 分布式版本控制 | https://git-scm.com/
 
