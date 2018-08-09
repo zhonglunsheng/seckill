@@ -28,9 +28,21 @@
  - 图形验证码：生成验证码 将用户ID和验证码作为key和value存储在Redis缓存中 用户下单时需校验验证码是否正确
  - 秒杀地址URL动态化：通过uuid随机生成path参数 并通过md5进行加密 
  - 接口限流：自定义注解 实现一段时间内限制请求次数 
+ - 设置用户ID为唯一索引 避免同一用户购买多件商品 库存减少时添加判断where count > 0
 
 #### 技术选型
-
+技术 | 名称 | 官网
+---|---|---
+Spring Boot | Spring快速开发框架 | 	https://spring.io/projects/spring-boot
+Redis | 分布式缓存数据库 | https://redis.io/
+MyBatis | ORM框架 | http://www.mybatis.org/mybatis-3/zh/index.html
+MyBatis Generator | 代码生成 | http://www.mybatis.org/generator/index.html
+PageHelper | MyBatis物理分页插件 | http://git.oschina.net/free/Mybatis_PageHelper
+druid | 数据库连接池 | https://github.com/alibaba/druid
+Logback | 日志组件 | https://logback.qos.ch/
+RabbitMq | 消息队列 | https://github.com/google/guava
+Maven | 项目构建管理 | http://maven.apache.org/
+Git | 分布式版本控制 | https://git-scm.com/
 
 #### 系统流程图
 
