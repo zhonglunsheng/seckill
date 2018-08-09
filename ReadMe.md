@@ -51,6 +51,14 @@ Git | 分布式版本控制 | https://git-scm.com/
 
 
 #### 启动
+```
+git clone git@github.com:zhonglunsheng/seckill.git
+```
+maven 导入项目
+
+Redis服务安装：http://blog.lipop.club/archives/29.html
+
+RabbitMq服务安装：http://blog.lipop.club/archives/13.html
 
 
 
